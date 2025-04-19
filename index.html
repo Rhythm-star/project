@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+    <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.6.0/dist/av-min.js"></script>
+</head>
+<body>
+    <h2>登录</h2>
+    <form id="login-form">
+        <label for="username">用户名：</label>
+        <input type="text" id="username" name="username" required><br><br>
+        <label for="password">密码：</label>
+        <input type="password" id="password" name="password" required><br><br>
+        <button type="submit">登录</button>
+    </form>
+
+    <script>
+        // 初始化 LeanCloud
+        AV.init({
+            appId: 'your-app-id',
+            appKey: 'your-app-key',
+            serverURL: 'https://your-server-url'
+        });
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // 调用 Sealos LAF 后端函数进行登录
+                const result = await AV.Cloud.run('login', { username, password });
+
+                if (result.success) {
+                    alert('登录成功');
+                    // 你可以在这里做进一步操作，例如跳转到首页
+                } else {
+                    alert(result.message);
+                }
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+    </script>
+</body>
+</html>
